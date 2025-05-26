@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文字列置換ツール</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* 上詰めにする */
+      min-height: 100vh; /* ビューポートの高さを満たす */
+      padding-top: 20px; /* 上部の余白を確保 */
+    }
+
+    .container {
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      width: 90%; /* 画面幅に応じて自動調整 */
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .input-section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    textarea[readonly] {
+      background-color: #f4f4f4;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    h3 {
+      color: #333;
+    }
+
+    /* スマホサイズでの調整 */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      textarea {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>テキスト置換ツール</h2>
+
+    <div class="input-section">
+      <label for="textBox">文章を入力：</label>
+      <textarea id="textBox" rows="10" placeholder="ここに置換したい文章を入力してください"></textarea>
+    </div>
+
+    <div class="input-section">
+      <label for="findText">検索する文字列：</label>
+      <textarea id="findText" rows="5" placeholder="検索文字を入力"></textarea>
+    </div>
+
+    <div class="input-section">
+      <label for="replaceText">置き換える文字列：</label>
+      <textarea id="replaceText" rows="5" placeholder="置き換え文字を入力"></textarea>
+    </div>
+
+    <div class="input-section">
+      <button id="replaceButton">置換する</button>
+    </div>
+
+    <h3>置換結果：</h3>
+    <textarea id="resultText" rows="10" readonly></textarea>
+  </div>
+
+  <script>
+    document.getElementById("replaceButton").addEventListener("click", function() {
+      let text = document.getElementById("textBox").value;
+
+      // 検索文字列と置き換え文字列を取得
+      const findText = document.getElementById("findText").value;
+      const replaceText = document.getElementById("replaceText").value;
+
+      // 検索文字列の改行コードを正規表現に対応できる形に変換
+      const escapedFind = findText.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1").replace(/\n/g, '\\n');
+      const regex = new RegExp(escapedFind, "g");
+
+      // 検索文字列を削除して置き換え文字列を挿入
+      let resultText = text.replace(regex, replaceText);
+
+      // 結果を表示
+      document.getElementById("resultText").value = resultText;
+    });
+  </script>
+</body>
+</html>
